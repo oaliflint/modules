@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Paperformat -->
+    <record id="paperformat_invoice_report" model="report.paperformat">
+        <field name="name">Inventory Ageing A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">55</field>
+        <field name="margin_bottom">40</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">54</field>
+        <field name="dpi">90</field>
+    </record>
+
+      <record id="paperformat_partner_ledger_report" model="report.paperformat">
+        <field name="name">Partner Ledger A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">45</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">45</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="print_invoice_report" model="ir.actions.report">
+        <field name="name">Invoice Report</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_invoice_report.invoice_report_temp</field>
+        <field name="report_file">custom_invoice_report.invoice_report_temp</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="custom_invoice_report.paperformat_invoice_report"/>
+    </record>
+
+    <!-- Customer Headers / Footers -->
+    <template id="external_invoice_report_layout">
+        <div class="header" style="margin-left: 20px; margin-right: 20px;">
+            <style>
+                p{margin-bottom: 0;}
+                .dir-rtl{direction: rtl}
+                .dir-ltr{direction: ltr}
+                .dotted-line{width: 100%; height:2px; border-bottom: 1px dotted blue; position: relative; top: 15px;}
+
+            </style>
+            <div class="row dir-ltr">
+                <div class="col-4" style="text-align:left">
+                    <h5 style="margin-top:0 !important;">TOHAF INTERNATIONAL CO.</h5>
+                    <p style="margin-top:0 !important;">Tools &amp; Consumer Utensils</p>
+                    <p style="margin-top:0 !important;">Hawally-Othman Street</p>
+                    <p style="margin-top:0 !important;">Mob : 66450798</p>
+                    <p style="margin-top:0 !important;">Instagam: tohaf.co</p>
+                    <p style="margin-top:0 !important;">Email: Info@tohafco.com</p>
+                </div>
+                <div class="col-4 text-center">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 120px;"
+                         alt="Logo"/>
+                    <t t-if="docs.move_type in ['in_invoice', 'out_invoice']">
+                        <t t-if="docs.inv_payment_type == 'cash'">
+                            <h3>Cash/فاتورة نقدا</h3>
+                        </t>
+                        <t t-else="">
+                            <h3>Credit/فاتوره بالحساب</h3>
+                        </t>
+                    </t>
+                    <t t-if="docs.move_type in ['out_refund', 'in_refund']">
+                        <h3>Credit Note/فاتورة مرتجع</h3>
+                    </t>
+                </div>
+                <div class="col-4" style="text-align:right">
+                    <h3>شركة التحف العالمية</h3>
+                    <p>للأدوات والأواني الاستهلاكية</p>
+                    <p>حولى شارع العثمان</p>
+                    <p class="dir-rtl">موبايل: 66450798</p>
+                    <p class="dir-rtl">انستغرام: tohaf.co</p>
+                    <p class="dir-rtl">ايميل: Info@tohafco.com</p>
+                </div>
+            </div>
+            <div class="row dir-ltr">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-3">
+                            <p style="font-weight: bold;">No.
+                                <t t-esc="docs.name"/>
+                            </p>
+                        </div>
+                        <div class="col-3"></div>
+                        <div class="col-6" style="font-weight: bold;text-align:right;">Date:
+                            <t t-esc="docs.invoice_date"/>
+                            :التاريخ
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row dir-ltr">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-2" style="font-weight: bold;">Mr./Messrs</div>
+                        <div class="col-6">
+                            <div class="text-center" style="font-weight: bold;">
+                                <t t-esc="docs.partner_id.name"/>
+                            </div>
+                        </div>
+                        <div class="col-4 dir-rtl" style="text-align:right;font-weight: bold;">المطلوب من السيد
+                            \ السادة:
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row dir-ltr">
+                <div class="col-6">
+                    <p class="text-right" style="margin-bottom:0;background:#ccc;">ملاحظة: يرجى صرف الشيك باسم :بشار
+                        مصطفى الجلاب
+                    </p>
+                </div>
+                <div class="col-6">
+                    <p class="text-left" style="margin-bottom:0;background:#ccc;">لا تعتبر هذه الفاتوره مسدده الا بسند
+                        قبض
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="article o_report_layout_standard">
+            <t t-raw="0"/>
+        </div>
+
+        <div class="footer">
+            <p style="text-align:right">استلمت البضاعة المذكورة أعلاه بحالة جيدة و أتعهد بتسديد قيمتها عند الطلب</p>
+            <div class="row dir-ltr">
+                <div class="col-3 text-center">
+                    <p>Received By توقيع المستلم</p>
+                    <div style="margin-top:20px;" class="dotted-line"/>
+                </div>
+                <div class="col-6"/>
+                <div class="col-3 text-center">
+                    <p>Salesman Sign توقيع البائع</p>
+                    <div style="margin-top:20px;" class="dotted-line"/>
+                </div>
+            </div>
+           <div class="text-center">
+                    <ul class="list-inline">
+                        <li>Page:<span class="page"/>/<span class="topage"/></li>
+                    </ul>
+                </div>
+        </div>
+    </template>
+    <template id="general_leager_invoice_report_layout">
+        <div class="header" style="margin-left: 20px; margin-right: 20px;">
+            <style>
+                p{margin-bottom: 0;}
+                .dir-rtl{direction: rtl}
+                .dir-ltr{direction: ltr}
+                .dotted-line{width: 100%; height:2px; border-bottom: 1px dotted blue; position: relative; top: 15px;}
+
+            </style>
+            <div class="row dir-ltr">
+                <div class="col-4" style="text-align:left">
+                    <h5 style="margin-top:0 !important;">TOHAF INTERNATIONAL CO.</h5>
+                    <p style="margin-top:0 !important;">Tools &amp; Consumer Utensils</p>
+                    <p style="margin-top:0 !important;">Hawally-Othman Street</p>
+                    <p style="margin-top:0 !important;">Mob : 66450798</p>
+                    <p style="margin-top:0 !important;">Instagam: tohaf.co</p>
+                    <p style="margin-top:0 !important;">Email: Info@tohafco.com</p>
+                </div>
+                <div class="col-4 text-center">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 120px;"
+                         alt="Logo"/>
+                    <h3>كشف حساب</h3>
+                </div>
+                <div class="col-4" style="text-align:right">
+                    <h3>شركة التحف العالمية</h3>
+                    <p>للأدوات والأواني الاستهلاكية</p>
+                    <p>حولى شارع العثمان</p>
+                    <p class="dir-rtl">موبايل: 66450798</p>
+                    <p class="dir-rtl">انستغرام: tohaf.co</p>
+                    <p class="dir-rtl">ايميل: Info@tohafco.com</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="article o_report_layout_standard">
+            <t t-raw="0"/>
+        </div>
+
+<!--        <div class="footer">-->
+<!--           <div class="text-center">-->
+<!--                    <ul class="list-inline">-->
+<!--                        <li>Page:<span class="page"/>/<span class="topage"/></li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--        </div>-->
+    </template>
+
+    <template id="external_invoice_report_header">
+        <!-- Multicompany -->
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id.sudo()"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+        <t t-call="custom_invoice_report.external_invoice_report_layout">
+            <t t-raw="0"/>
+        </t>
+    </template>
+
+     <template id="general_ledger_invoice_report_header">
+        <!-- Multicompany -->
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id.sudo()"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+        <t t-call="custom_invoice_report.general_leager_invoice_report_layout">
+            <t t-raw="0"/>
+        </t>
+    </template>
+
+</odoo>

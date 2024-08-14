@@ -1,0 +1,23 @@
+13.0.0.1 ==>fixed issue of taxes are changing only on initial discount applied, applying discount after first discount applied does not change tax amount automatically.
+
+13.0.0.2 ==>1.fixed issue of amount total when tax is included and product quantity is more than one.
+2.create amount total and untaxed amount field Monetary.
+
+13.0.0.3 ==>fixed issue of tax calculation on untax amount.
+
+13.0.0.4 ==>fixed issue of configuration and added tax discount policy as default.
+
+13.0.0.5 ==>fixed issue of total amount with discount in tree view.
+
+=> 13.0.0.6 : Add French, Spanish , Arabic and Dutch translation in module also improved an index.
+
+
+Version: 13.0.0.7 | 30/11/2021 :-
+	- In previous version warning on creating invoice from sale order and adding discount and posting it, solved that issue.
+	- Wrong discount amount calculation for line discount, solved that issue.
+	- In previous version wrong total tax calculation, after applying discount in invoice, solved that issue.
+
+13.0.0.8 ==>fixed issue of warning in credit note.
+
+13.0.0.9 ==>fixed issue of credit debit in credit note.
+13.0.1.0==>fixed issue of amount total signed in invoice.

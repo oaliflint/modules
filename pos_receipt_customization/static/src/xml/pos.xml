@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="OrderReceipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[@class='pos-receipt']" position="replace">
+            <div class="pos-receipt">
+                <t t-if="receipt.company.logo">
+                    <img class="pos-receipt-logo" t-att-src="receipt.company.logo" alt="Logo"/>
+                    <br/>
+                </t>
+                <t t-if="!receipt.company.logo">
+                    <h2 class="pos-receipt-center-align">
+                        <t t-esc="receipt.company.name" />
+                    </h2>
+                    <br/>
+                </t>
+                <div class="receipt_content">
+                    <h3 style="text-align: center">Cash Invoice</h3>
+                    <table width="100%" style="direction: rtl; font-size: 13px;">
+                        <tr style="direction: rtl;">
+                            <td width="50%" style="direction: rtl;text-align: right;">رقم الفاتوره / Invoice # :</td>
+                            <td width="50%" style="text-align: right;"><t t-esc="receipt.name" /></td>
+                        </tr>
+                        <tr style="direction: rtl;">
+                            <td width="50%" style="direction: rtl;text-align: right;">رقم طلب الشراء / SO # :</td>
+                            <td width="50%" style="text-align: right;"><t t-esc="receipt.name" /></td>
+                        </tr>
+                        <tr style="direction: rtl;">
+                            <td width="50%" style="direction: rtl;text-align: right;">تاريخ / Date &amp; time #:</td>
+                            <td width="50%" style="text-align: right;"><t t-esc="receipt.date.localestring" /></td>
+                        </tr>
+                        <tr style="direction: rtl;">
+                            <td width="50%" style="direction: rtl;text-align: right;">قسم / Department #:</td>
+                            <td width="50%" style="text-align: right;">x</td>
+                        </tr>
+                        <tr style="direction: rtl;" t-if="receipt.client">
+                            <td width="50%" style="direction: rtl;text-align: right;">سيد/ة / To Mr/Ms. #:</td>
+                            <td width="50%" style="text-align: right;"><t t-esc='receipt.client.name' /></td>
+                        </tr>
+                        <tr style="direction: rtl;" t-if="receipt.client">
+                            <td width="50%" style="direction: rtl;text-align: right;">هاتف / Phone number #:</td>
+                            <td width="50%" style="text-align: right;"><t t-esc='receipt.client.phone' /></td>
+                        </tr>
+                        <tr style="direction: rtl;">
+                            <td width="50%" style="direction: rtl;text-align: right;">موظف / Created By #:</td>
+                            <td width="50%" style="text-align: right;"><t t-esc='receipt.cashier' /></td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- Orderlines -->
+
+                <table width="100%" style="direction: rtl; margin-top: 15px; font-size: 12px;">
+                    <tr>
+                        <td style="text-align: right; padding: 5px; border-bottom: 1px solid #000">
+                            Description <br/> وصف المنتج
+                        </td>
+                        <td style="text-align: right; padding: 5px; border-bottom: 1px solid #000">
+                            Qty <br/> القطع
+                        </td>
+                        <td style="text-align: right; padding: 5px; border-bottom: 1px solid #000">
+                            Unit price <br/> سعر الوحده
+                        </td>
+                        <td style="text-align: right; padding: 5px; border-bottom: 1px solid #000">
+                            Net Amount <br/> المبلغ صافي
+                        </td>
+                    </tr>
+                    <t t-foreach="receipt.orderlines" t-as="line">
+                        <tr>
+                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid #000"><t t-esc="line.product_name" /></td>
+                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid #000"><t t-esc="line.quantity" /></td>
+                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid #000"><t t-esc="line.price_lst" /></td>
+                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid #000"><t t-esc="line.price_lst * line.quantity" /></td>
+                        </tr>
+                    </t>
+                </table>
+
+                <!-- Subtotal -->
+
+                <div style="direction: rtl; font-size: 12px;">
+                    <div style="direction: rtl; text-align: center;">
+                        <p style="direction: rtl; margin-bottom: 0; font-size: 12px;">
+                        القيمة النهائية / Final Amount :
+                        <span t-esc="env.pos.format_currency(receipt.subtotal)" class="pos-receipt-right-align"/>
+                        </p>
+                        <p style="font-size: 12px;">** All amounts and prices in KWD **</p>
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 0; font-size: 12px;">Modes of payment</p>
+                        <p style="margin-bottom: 0; font-size: 12px;"><t t-esc="receipt.paymentlines[0].name" /> <t t-esc="receipt.paymentlines[0].amount" /></p>
+                        <p style="margin-bottom: 0; font-size: 12px;">Remarks</p>
+                    </div>
+                    <div style="text-align: center; font-size: 12px;">
+                    <p style="margin-bottom: 0; font-size: 12px;">To track your order please visit xcite.com</p>
+                    <p style="margin-bottom: 0; font-size: 12px;">لتتبع الطلب برجاء زياره موقع xcite.com</p>
+                    <p style="margin-bottom: 0; font-size: 12px;">Thank you for shopping with us</p>
+                    <p style="margin-bottom: 0; font-size: 12px;">Customer care: <t t-esc="receipt.company.phone" /></p>
+                    <p style="margin-bottom: 0; font-size: 12px;"><t t-esc="receipt.company.website" /></p>
+                </div>
+                </div>
+            </div>
+        </xpath>
+    </t>
+</templates>

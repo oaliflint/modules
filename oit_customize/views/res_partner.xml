@@ -1,0 +1,13 @@
+<data>
+    <record id="inherit_res_partner_form" model="ir.ui.view">
+        <field name="name">inherit.res.partner.form</field>
+        <field name="model">res.partner</field>
+        <!--<field name="groups_id" eval="[(4, ref(''))]"/>-->
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="vat" position="after">
+                <field name="discount_percent"/>
+            </field>
+        </field>
+    </record>
+</data>

@@ -1,0 +1,122 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* invoice_stock_move
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-24 23:56+0000\n"
+"PO-Revision-Date: 2022-12-24 23:56+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: invoice_stock_move
+#: model:ir.model.fields.selection,name:invoice_stock_move.selection__account_move__state__cancel
+msgid "Cancelled"
+msgstr "ملغي"
+
+#. module: invoice_stock_move
+#: model:ir.model.fields,field_description:invoice_stock_move.field_account_bank_statement_line__code
+#: model:ir.model.fields,field_description:invoice_stock_move.field_account_move__code
+#: model:ir.model.fields,field_description:invoice_stock_move.field_account_payment__code
+msgid "Code"
+msgstr ""
+
+#. module: invoice_stock_move
+#: model:ir.model.fields,field_description:invoice_stock_move.field_account_bank_statement_line__picking_count
+#: model:ir.model.fields,field_description:invoice_stock_move.field_account_move__picking_count
+#: model:ir.model.fields,field_description:invoice_stock_move.field_account_payment__picking_count
+msgid "Count"
+msgstr ""
+
+#. module: invoice_stock_move
+#: model:ir.model.fields,field_description:invoice_stock_move.field_stock_warehouse__is_default_warehouse_for_invoice
+msgid "Default Warehouse For Invoice"
+msgstr "مستودع تلقائى للفواتير"
+
+#. module: invoice_stock_move
+#: model:ir.model.fields.selection,name:invoice_stock_move.selection__account_move__state__draft
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: invoice_stock_move
+#: model:ir.model,name:invoice_stock_move.model_account_move
+msgid "Journal Entry"
+msgstr "قيد اليومية"
+
+#. module: invoice_stock_move
+#: model:ir.model,name:invoice_stock_move.model_account_move_line
+msgid "Journal Item"
+msgstr "عنصر اليومية"
+
+#. module: invoice_stock_move
+#: model:ir.model.fields,field_description:invoice_stock_move.field_account_bank_statement_line__invoice_picking_id
+#: model:ir.model.fields,field_description:invoice_stock_move.field_account_move__invoice_picking_id
+#: model:ir.model.fields,field_description:invoice_stock_move.field_account_payment__invoice_picking_id
+msgid "Picking Id"
+msgstr ""
+
+#. module: invoice_stock_move
+#: model:ir.model.fields,field_description:invoice_stock_move.field_account_bank_statement_line__picking_type_id
+#: model:ir.model.fields,field_description:invoice_stock_move.field_account_move__picking_type_id
+#: model:ir.model.fields,field_description:invoice_stock_move.field_account_payment__picking_type_id
+msgid "Picking Type"
+msgstr ""
+
+#. module: invoice_stock_move
+#: code:addons/invoice_stock_move/models/invoice_stock.py:0
+#, python-format
+msgid "Please Select Warehouse"
+msgstr ""
+
+#. module: invoice_stock_move
+#: model:ir.model.fields.selection,name:invoice_stock_move.selection__account_move__state__post
+msgid "Post"
+msgstr ""
+
+#. module: invoice_stock_move
+#: model:ir.model.fields.selection,name:invoice_stock_move.selection__account_move__state__posted
+msgid "Posted"
+msgstr "مُرحّل "
+
+#. module: invoice_stock_move
+#: model:ir.model.fields.selection,name:invoice_stock_move.selection__account_move__state__proforma
+#: model:ir.model.fields.selection,name:invoice_stock_move.selection__account_move__state__proforma2
+msgid "Pro-forma"
+msgstr ""
+
+#. module: invoice_stock_move
+#: model:ir.model.fields.selection,name:invoice_stock_move.selection__account_move__state__done
+msgid "Received"
+msgstr ""
+
+#. module: invoice_stock_move
+#: model_terms:ir.ui.view,arch_db:invoice_stock_move.customer_invoice_stock_move_view
+msgid "Shipment"
+msgstr ""
+
+#. module: invoice_stock_move
+#: model:ir.model.fields,field_description:invoice_stock_move.field_account_move__state
+#: model:ir.model.fields,field_description:invoice_stock_move.field_account_payment__state
+msgid "Status"
+msgstr "الحالة"
+
+#. module: invoice_stock_move
+#: model:ir.model.fields,help:invoice_stock_move.field_account_bank_statement_line__picking_type_id
+#: model:ir.model.fields,help:invoice_stock_move.field_account_move__picking_type_id
+#: model:ir.model.fields,help:invoice_stock_move.field_account_payment__picking_type_id
+msgid "This will determine picking type of incoming shipment"
+msgstr ""
+
+#. module: invoice_stock_move
+#: model:ir.model,name:invoice_stock_move.model_stock_warehouse
+#: model:ir.model.fields,field_description:invoice_stock_move.field_account_bank_statement_line__warehouse_id
+#: model:ir.model.fields,field_description:invoice_stock_move.field_account_move__warehouse_id
+#: model:ir.model.fields,field_description:invoice_stock_move.field_account_payment__warehouse_id
+msgid "Warehouse"
+msgstr "المستودع "

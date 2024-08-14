@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_move_form_global_discount_inherit" model="ir.ui.view">
+            <field name="name">view.move.form.global.discount.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <field name="tax_totals_json" position="after">
+                    <field name="total_discount"/>
+                </field>
+                <xpath expr="//field[@name='ref']" position="after">
+                    <field name="use_global_discount" invisible="1"/>
+                    <field name="invoice_discount_type"/>
+                    <field name="discount_type" attrs="{'invisible':['|','|',('use_global_discount','=',False),('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')),('invoice_discount_type','!=','globle')],'readonly': [('state', 'not in', ['draft'])]}"/>
+                    <field name="global_discount_amount" attrs="{'readonly': [('state', 'not in', ['draft'])],'invisible': ['|',('use_global_discount','=',False),('discount_type', '!=', 'amount')]}"/>
+                    <field name="global_discount_percentage" attrs="{'readonly': [('state', 'not in', ['draft'])],'invisible': ['|',('use_global_discount','=',False),('discount_type', '!=', 'percentage')]}"/>
+                </xpath>
+
+                <xpath expr="//page/field[@name='invoice_line_ids']/tree/field[@name='discount']" position="before">
+                    <field name="is_discount_line" invisible="1"/>
+                    <field name="sub_total_before_discount" attrs="{'column_invisible':[('parent.invoice_discount_type','!=','line')]}"/>
+                    <field name="discount_type"
+                           force_save="1"
+                          attrs="{'column_invisible':[('parent.invoice_discount_type','!=','line')]}"/>
+                    <field name="discount_amount"
+                           force_save="1"
+                           attrs="{'column_invisible':[('parent.invoice_discount_type','!=','line')]}"/>
+                </xpath>
+                <xpath expr="//page/field[@name='line_ids']/tree/field[@name='account_id']" position="before">
+                    <field name="is_discount_line" invisible="1"/>
+                    <field name="sub_total_before_discount" />
+                    <field name="discount_type"
+                           invisible="1"/>
+                    <field name="discount_amount"
+                           invisible="1"/>
+                </xpath>
+
+                <xpath expr="//page/field[@name='invoice_line_ids']/tree/field[@name='discount']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page/field[@name='invoice_line_ids']/tree/field[@name='price_unit']"
+                       position="attributes">
+                    <attribute name="attrs">{'invisible':[('is_discount_line','=',True)]}</attribute>
+                </xpath>
+                <xpath expr="//page/field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="attributes">
+                    <attribute name="attrs">{'readonly':[('is_discount_line','=',True)]}</attribute>
+                </xpath>
+                <xpath expr="//page/field[@name='invoice_line_ids']/tree/field[@name='tax_ids']" position="attributes">
+                    <attribute name="attrs">{'readonly':[('is_discount_line','=',True)]}</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

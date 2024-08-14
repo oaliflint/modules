@@ -1,0 +1,52 @@
+<data>
+    <record id="customer_code_form" model="ir.ui.view">
+        <field name="name">customer.code.form</field>
+        <field name="model">customer.code</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="partner_id" required="1"/>
+                    </group>
+                    <notebook>
+                        <page name="cusomer_code_lines" string="Cusomer Code Lines">
+                            <!-- add  context="{'default_field' : field}" to set default value -->
+                            <field name="customer_code_line_ids">
+                                <tree editable="bottom">
+                                    <!-- add  domain="[('id','=',parent.field)]" to set default domain -->
+<!--                                    <field name="product_template_id" required="1"/>-->
+                                    <field name="product_id" required="1"/>
+                                    <field name="customer_code" required="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record id="customer_code_tree" model="ir.ui.view">
+        <field name="name">customer.code.tree</field>
+        <field name="model">customer.code</field>
+        <!--<field name="field_parent">children_ids if_want_to_add_Childs</field>-->
+        <field name="arch" type="xml">
+            <tree>
+                <field name="partner_id"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="customer_code_action" model="ir.actions.act_window">
+        <field name="name">Customer Code</field>
+        <field name="res_model">customer.code</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+    <menuitem id="customer_code_menu"
+              name="Customer Code" 
+              action="customer_code_action" 
+              parent="account.menu_finance_receivables"
+              sequence="12"/>
+</data>

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="invoice_report_temp">
+        <t t-call="web.html_container">
+            <t t-call="custom_invoice_report.external_invoice_report_header">
+                <div class="page"
+                     style="font-size:15px;color:#000; margin-left: 20px; margin-right: 20px;">
+                    <style>
+                        .dir-rtl{direction: rtl; text-align: right}
+                        .dir-ltr{direction: ltr; text-align: left}
+                        table{border-collapse: separate;border-spacing: 0;page-break-inside: avoid !important;}
+                        table,thead,tbody,th,tr{}
+                        td{border-bottom: 1px dotted blue; height: 5px !important; border-left: 1px solid blue;
+                        border-right: 1px
+                        solid blue;padding:3px !important;margin:0 !important;}
+                        th{padding:0 !important; margin:0; !important;}
+                        tbody{border: 1px solid blue;}
+                        p{margin-bottom:0}
+                        .column-radius{border-radius: 10px; border: 1px solid blue !important;}
+                        .column-top-radius{border-radius: 10px 10px 0 0; border: 1px solid blue !important;}
+                        .column-bottom-radius{border-radius: 0 0 10px 10px; border: 1px solid blue !important;}
+                        .dotted-line{width: 100%; height:2px; border-bottom: 1px dotted blue; position: relative; top:
+                        15px;}
+
+                        .left-hint{
+                        transform: rotate(-90deg);-webkit-transform: rotate(-90deg);-moz-transform:
+                        rotate(-90deg);-ms-transform: rotate(-90deg);
+                        left: -450px;top: 20; position: relative; z-index: 22323;
+                        }
+                        .right-hint{
+                        transform: rotate(-90deg);-webkit-transform: rotate(-90deg);-moz-transform:
+                        rotate(-90deg);-ms-transform: rotate(-90deg);
+                        left: 450px;top: 20; position: relative; z-index: 22323;
+                        }
+                    </style>
+                    <div class="row dir-ltr">
+                        <div class="col-12">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center column-radius" rowspan="2">
+                                            م
+                                            <br/>
+                                            No.
+                                        </th>
+                                        <th class="text-center column-radius" rowspan="2" width="20%">
+                                            كود الصنف
+                                            <br/>
+                                            Product Code
+                                        </th>
+                                        <th class="text-center column-radius" rowspan="2" width="40%">
+                                            اسم الصنف
+                                            <br/>
+                                            Product Name
+                                        </th>
+                                        <th class="text-center column-radius" rowspan="2">
+                                            الوحده
+                                            <br/>
+                                            Unit
+                                        </th>
+                                        <th class="text-center column-radius" rowspan="2">
+                                            الكمية
+                                            <br/>
+                                            Qty.
+                                        </th>
+                                        <th class="text-center column-top-radius" colspan="2">
+                                            سعر الوحده
+                                            <br/>
+                                            Unit Price
+                                        </th>
+                                        <th class="text-center column-top-radius" colspan="2">
+                                            المبلغ الاجمالي
+                                            <br/>
+                                            Total Amount
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center column-bottom-radius">
+                                            دينار
+                                            <br/>
+                                            K.D.
+                                        </th>
+                                        <th class="text-center column-bottom-radius">
+                                            فلس
+                                            <br/>
+                                            Fils
+                                        </th>
+                                        <th class="text-center column-bottom-radius">
+                                            دينار
+                                            <br/>
+                                            K.D.
+                                        </th>
+                                        <th class="text-center column-bottom-radius">
+                                            فلس
+                                            <br/>
+                                            Fils
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <t t-set="index" t-value="0"/>
+                                <t t-set="row_length" t-value="10"/>
+                                <t t-set="lines" t-value="docs.invoice_line_ids.sorted(key=lambda l: (-l.sequence, l.date, l.move_name, -l.id), reverse=True)"/>
+                                <tbody class="sale_tbody">
+                                    <t t-foreach="lines"
+                                       t-as="line">
+                                        <t t-set="index" t-value="index+1"/>
+                                        <tr>
+                                            <td>
+                                                <t t-esc="index"/>
+                                            </td>
+                                            <td>
+                                                <t t-if="line.customer_code">
+                                                    <t t-esc="line.customer_code"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-esc="line.product_id.default_code"/>
+                                                </t>
+
+                                            </td>
+                                            <td>
+                                                <t t-esc="line.product_id.name"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="line.product_uom_id.name"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="docs.remove_fractions(line.quantity)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="str(line.price_unit).split('.')[0]"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="line.get_price_discount_after_digit(line.price_unit)"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="str(line.price_subtotal).split('.')[0]"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="line.get_price_discount_after_digit(line.price_subtotal)"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                            <table class="table" style="page-break-after: avoid;">
+                                <tfoot>
+                                    <tr>
+                                        <td class="column-radius" colspan="6">
+                                            <div class="row dir-ltr">
+                                                <div class="col-10" style="text-align:left;font-weight: bold;">
+                                                    SUBTOTAL(KD) - المجموع دك
+                                                </div>
+                                                <div class="col-2">
+                                                    <div style="text-align:right;font-weight: bold;">
+                                                        <span t-esc="'%.3f'% sum(docs.invoice_line_ids.mapped('price_total'))"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="column-radius" colspan="6">
+                                            <div class="row dir-ltr">
+                                                <div class="col-10" style="text-align:left;font-weight: bold;">
+                                                    Discount%(KD) - نسبة و قیمة
+                                                    الخصم% دك
+                                                </div>
+                                                <div class="col-2">
+                                                    <div style="text-align:right;font-weight: bold;">
+                                                        <span t-esc="docs.get_amount_discount(sum(docs.invoice_line_ids.mapped('price_total')))"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="column-radius" colspan="6">
+                                            <div class="row dir-ltr">
+                                                <div class="col-10" style="text-align:left;font-weight: bold;">Grand
+                                                    Total(KD) - المبلغ
+                                                    الإجمالي دك
+                                                </div>
+                                                <div class="col-2">
+                                                    <div style="text-align:right;font-weight: bold;">
+                                                        <span t-esc="'%.3f'% docs.amount_total"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="column-radius" colspan="6">
+                                            <div class="row dir-ltr">
+                                                <div class="col-4" style="text-align:left;font-weight: bold;">Total In
+                                                    Details(KD) -
+                                                    التفقيط دك
+                                                </div>
+                                                <div class="col-8">
+                                                    <div style="text-align:right;font-weight: bold;">
+                                                        <t t-esc="docs.currency_id.amount_to_text(docs.amount_total)"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

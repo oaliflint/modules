@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form_global_discount_inherit" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.global.discount.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <div data-key="account" position="inside">
+                    <h2>Invoice Global Discount</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="use_global_discount"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="use_global_discount"/>
+                                <div class="text-muted">
+                                    Allowed to use global discount in invoice.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <label for="discount_product_id"
+                                       attrs="{'invisible':[('use_global_discount','=',False)]}"/>
+                                <field name="discount_product_id" context="{'default_is_discount_product':True}"
+                                       attrs="{'invisible':[('use_global_discount','=',False)],'required':[('use_global_discount','=',True)]}"/>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

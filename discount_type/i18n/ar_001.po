@@ -1,0 +1,149 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* discount_type
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-24 22:02+0000\n"
+"PO-Revision-Date: 2022-12-24 22:02+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: discount_type
+#: model:ir.model.fields.selection,name:discount_type.selection__account_move__global_discount_type__amount
+#: model:ir.model.fields.selection,name:discount_type.selection__account_move_line__global_discount_type__amount
+msgid "Amount"
+msgstr "مبلغ"
+
+#. module: discount_type
+#: model:ir.model.fields,field_description:discount_type.field_account_bank_statement_line__amount_discount
+#: model:ir.model.fields,field_description:discount_type.field_account_move__amount_discount
+#: model:ir.model.fields,field_description:discount_type.field_account_move_line__global_discount_rate
+#: model:ir.model.fields,field_description:discount_type.field_account_payment__amount_discount
+msgid "Discount"
+msgstr "الخصم"
+
+#. module: discount_type
+#: model:ir.model.fields,field_description:discount_type.field_account_move_line__discount
+msgid "Discount (%)"
+msgstr "خصم (%)"
+
+#. module: discount_type
+#: model:ir.model.fields,field_description:discount_type.field_account_move_line__is_discount_line
+msgid "Discount Line"
+msgstr ""
+
+#. module: discount_type
+#: model:ir.model.fields,field_description:discount_type.field_account_move_line__global_discount_type
+msgid "Discount Method:"
+msgstr "طريقه الخصم"
+
+#. module: discount_type
+#: model:ir.model.fields,field_description:discount_type.field_account_move_line__amount_discount
+msgid "Discount amount"
+msgstr ""
+
+#. module: discount_type
+#: model:ir.model.fields,field_description:discount_type.field_account_bank_statement_line__global_discount_rate
+#: model:ir.model.fields,field_description:discount_type.field_account_move__global_discount_rate
+#: model:ir.model.fields,field_description:discount_type.field_account_payment__global_discount_rate
+msgid "Invoice Discount"
+msgstr "قيمه الخصم على اجمالى الفاتوره"
+
+#. module: discount_type
+#: model:ir.model.fields,field_description:discount_type.field_account_bank_statement_line__global_discount_type
+#: model:ir.model.fields,field_description:discount_type.field_account_move__global_discount_type
+#: model:ir.model.fields,field_description:discount_type.field_account_payment__global_discount_type
+msgid "Invoice Discount Method:"
+msgstr "طريقه الخصم على اجمالى الفاتوره"
+
+#. module: discount_type
+#: model:ir.model.fields,field_description:discount_type.field_account_bank_statement_line__invoice_net_total
+#: model:ir.model.fields,field_description:discount_type.field_account_move__invoice_net_total
+#: model:ir.model.fields,field_description:discount_type.field_account_payment__invoice_net_total
+msgid "Invoice Net total"
+msgstr ""
+
+#. module: discount_type
+#: model:ir.model.fields,field_description:discount_type.field_account_bank_statement_line__invoice_date
+#: model:ir.model.fields,field_description:discount_type.field_account_move__invoice_date
+#: model:ir.model.fields,field_description:discount_type.field_account_payment__invoice_date
+msgid "Invoice/Bill Date"
+msgstr "تاريخ الفاتورة "
+
+#. module: discount_type
+#: model:ir.model.fields,field_description:discount_type.field_product_product__is_discount_product
+#: model:ir.model.fields,field_description:discount_type.field_product_template__is_discount_product
+msgid "Is Discount Product"
+msgstr ""
+
+#. module: discount_type
+#: model:ir.model,name:discount_type.model_account_move
+msgid "Journal Entry"
+msgstr "قيد اليومية"
+
+#. module: discount_type
+#: model:ir.model,name:discount_type.model_account_move_line
+msgid "Journal Item"
+msgstr "عنصر اليومية"
+
+#. module: discount_type
+#: model:ir.model.fields.selection,name:discount_type.selection__account_move__global_discount_type__percent
+#: model:ir.model.fields.selection,name:discount_type.selection__account_move_line__global_discount_type__percent
+msgid "Percentage"
+msgstr "نسبة"
+
+#. module: discount_type
+#: model:ir.model,name:discount_type.model_product_template
+msgid "Product Template"
+msgstr "قالب المنتج"
+
+#. module: discount_type
+#: model_terms:ir.ui.view,arch_db:discount_type.global_discount_account_view_form
+msgid "Total After Discount"
+msgstr "الاجمالى بعد الخصم"
+
+#. module: discount_type
+#: model:ir.model.fields,field_description:discount_type.field_account_bank_statement_line__amount_before_discount
+#: model:ir.model.fields,field_description:discount_type.field_account_move__amount_before_discount
+#: model:ir.model.fields,field_description:discount_type.field_account_payment__amount_before_discount
+msgid "Total Before Discount"
+msgstr "الاجمالى قبل الخصم"
+
+#. module: discount_type
+#: model:ir.model.fields,field_description:discount_type.field_account_bank_statement_line__amount_after_discount
+#: model:ir.model.fields,field_description:discount_type.field_account_move__amount_after_discount
+#: model:ir.model.fields,field_description:discount_type.field_account_payment__amount_after_discount
+msgid "Total after Discount"
+msgstr "الاجمالى بعد الخصم"
+
+#. module: discount_type
+#: model:ir.model.fields,field_description:discount_type.field_account_bank_statement_line__globle_discount_percent
+#: model:ir.model.fields,field_description:discount_type.field_account_move__globle_discount_percent
+#: model:ir.model.fields,field_description:discount_type.field_account_payment__globle_discount_percent
+msgid "Globle Discount Percentage %"
+msgstr "نسبة الخصم على الفاتوره"
+
+#. module: discount_type
+#: model:ir.model.fields,field_description:discount_type.field_account_bank_statement_line__payment_type
+#: model:ir.model.fields,field_description:discount_type.field_account_move__inv_payment_type
+msgid "Invoice Type"
+msgstr "نوع الفاتوره"
+
+#. module: discount_type
+#: model:ir.model.fields.selection,name:discount_type.selection__account_move__inv_payment_type__cash
+msgid "Cash"
+msgstr "نقدا"
+
+#. module: discount_type
+#: model:ir.model.fields.selection,name:discount_type.selection__account_move__inv_payment_type__credit
+msgid "Credit"
+msgstr "بالحساب"
+
+

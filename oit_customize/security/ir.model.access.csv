@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+customer_code_id,customer_code_name,model_customer_code,,1,1,1,1
+customer_code_line_id,customer_code_line_name,model_customer_code_line,,1,1,1,1

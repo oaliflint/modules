@@ -1,0 +1,45 @@
+<odoo>
+    <data>
+        <record id="global_discount_account_view_form" model="ir.ui.view">
+            <field name="name">global.discount.account.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+<!--                <xpath expr="//field[@name='tax_totals_json']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+                 <xpath expr="//field[@name='payment_reference']" position="after">
+                     <field name="inv_payment_type"/>
+                </xpath>
+<!--                <xpath expr="//field[@name='tax_totals_json']" position="after">-->
+<!--                    <field name="amount_discount"/>-->
+<!--                    <field name="amount_after_discount" string="Total After Discount"/>-->
+<!--                    <field name="global_discount_type"/>-->
+<!--                    <field name="global_discount_rate" attrs="{'invisible':[('global_discount_type','!=','amount')]}"/>-->
+<!--                    <field name="globle_discount_percent" attrs="{'invisible':[('global_discount_type','!=','percent')]}"/>-->
+<!--                    <field name="amount_total"/>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='tax_totals_json']" position="after">-->
+<!--                    <field name="amount_before_discount"/>-->
+<!--                </xpath>-->
+                <xpath expr="//field[@name='invoice_line_ids']//tree//field[@name='price_subtotal']" position="before">
+                    <field name="global_discount_type"/>
+                    <field name="global_discount_rate"/>
+                    <field name="amount_discount" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']//tree//field[@name='price_subtotal']" position="before">
+                    <field name="global_discount_type" invisible="1"/>
+                    <field name="global_discount_rate" invisible="1"/>
+                    <field name="amount_discount" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']//tree//field[@name='price_subtotal']"
+                       position="attributes">
+                    <attribute name="force_save">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']//tree//field[@name='discount']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

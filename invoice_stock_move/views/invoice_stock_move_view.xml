@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_warehouse_form_inherit" model="ir.ui.view">
+            <field name="name">view.warehouse.form.inherit</field>
+            <field name="model">stock.warehouse</field>
+            <field name="inherit_id" ref="stock.view_warehouse"/>
+            <field name="arch" type="xml">
+                <field name="code" position="after">
+                    <field name="is_default_warehouse_for_invoice"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="customer_invoice_stock_move_view" model="ir.ui.view">
+            <field name="name">Move Name</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <!--                    <button name="action_stock_move" string="Transfer" type="object" class="oe_highlight"-->
+                    <!--                            attrs="{'invisible':['|',('state', '=', 'draft'),('picking_count', '=', 1)]}"/>-->
+                </xpath>
+                <xpath expr="//field[@name='invoice_date']" position="after">
+
+                    <field name="code" invisible="1"/>
+                    <field name="warehouse_id" />
+                    <field name="picking_type_id" invisible="1"/>
+                    <field name="invoice_picking_id" invisible="1"/>
+                </xpath>
+                <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                    <button type="object"
+                            name="action_view_picking" states="open,paid"
+                            class="oe_stat_button"
+                            attrs="{'invisible':['|',('state','=','draft'),('picking_count', '&lt;', 1)]}"
+                            icon="fa-truck">
+                        <field name="picking_count" string="Shipment" widget="statinfo"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

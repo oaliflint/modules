@@ -1,0 +1,511 @@
+<odoo>
+    <record id="partner_ledger_formatting" model="report.paperformat">
+        <field name="name">European A4 without borders</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">25</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">10</field>
+    </record>
+
+    <template id="dynamic_accounts_report.partner_ledger_pdf">
+        <t t-call="web.html_container">
+            <t t-call="custom_invoice_report.general_ledger_invoice_report_header">
+                <div class="page">
+                     <style>
+                        table,thead,tbody,th,tr{}
+                        td{height: 5px !important;padding:3px !important;margin:0 !important;}
+                         th{padding:0 !important; margin:0; !important;}
+                         .dir-rtl{direction: rtl; text-align: right}
+                         .dir-ltr{direction: ltr; text-align: left}
+
+                    </style>
+                    <t t-foreach="partner_data" t-as="partner">
+                        <!--                <div class="header">-->
+                        <!--                    <style>-->
+                        <!--                        .dir-rtl{direction: rtl; text-align: right}-->
+                        <!--                        .dir-ltr{direction: ltr; text-align: left}-->
+                        <!--                    </style>-->
+                        <!--                    &lt;!&ndash;                    <div class="row">&ndash;&gt;-->
+                        <!--                    &lt;!&ndash;                        <div class="col-6 dir-ltr">&ndash;&gt;-->
+                        <!--                    &lt;!&ndash;                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>&ndash;&gt;-->
+                        <!--                    &lt;!&ndash;                        </div>&ndash;&gt;-->
+
+                        <!--                    &lt;!&ndash;                    </div>&ndash;&gt;-->
+
+                        <!--                </div>-->
+                        <!--                <div class="article">-->
+
+                        <!--                        <style>-->
+                        <!--                            .dir-rtl{direction: rtl; text-align: right}-->
+                        <!--                            .dir-ltr{direction: ltr; text-align: left}-->
+                        <!--                            table{border-collapse: separate;border-spacing: 0;page-break-inside: avoid !important;}-->
+                        <!--                            table,thead,tbody,th,tr{}-->
+                        <!--                        </style>-->
+                        <!--                        <div class="row">-->
+                        <!--                            <div class="col-12 dir-rtl" style="text-align:right;font-weight: bold;">-->
+                        <!--                                <span t-esc="partner['name']"/>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="row">-->
+                        <!--                            <div class="col-12 text-center" style="margin-bottom: 1rem;">-->
+                        <!--                                <strong>كشف حساب</strong>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+
+                        <!--                    <div class="row" style="text-align:center;font-weight: bold;">-->
+                        <div class="col-12">
+                            <div class="row" style="font-weight: bold;">
+                                <div class="col-3">
+                                    <p style="font-weight: bold;background-color:lightgrey;">رقم الحساب :
+                                        <t t-esc="request.env['res.partner'].browse(int(partner['id'])).ref"/>
+                                    </p>
+                                </div>
+                                <div class="col-3">
+                                    <p style="font-weight: bold;background-color:lightgrey;">اسم الحساب :
+                                        <t t-esc="request.env['res.partner'].browse(int(partner['id'])).display_name"/>
+                                    </p>
+                                </div>
+                                <t t-if="Filters.get('date_from')">
+                                    <div class="col-3">
+                                        <p style="font-weight: bold;background-color:lightgrey;">من تاريخ :
+                                            <t t-esc="Filters.get('date_from')"/>
+                                        </p>
+                                    </div>
+                                </t>
+                                <t t-if="Filters.get('date_to')">
+                                    <div class="col-3">
+                                        <p style="font-weight: bold;background-color:lightgrey;">الى تاريخ :
+                                            <t t-esc="Filters.get('date_to')"/>
+                                        </p>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!--                            <div class="col-12 dir-rtl" style="text-align:center;">-->
+                            <!--                                <t t-if="Filters.get('date_from')">-->
+                            <!--                                    <strong>من الفترة:</strong>-->
+                            <!--                                    <t t-esc="Filters['date_from']"/>-->
+                            <!--                                </t>-->
+                            <!--                                <t t-if="Filters.get('date_to')">-->
+                            <!--                                    <strong>الي:</strong>-->
+                            <!--                                    <t t-esc="Filters['date_to']"/>-->
+                            <!--                                </t>-->
+                            <!--                            </div>-->
+                        </div>
+                        <t t-set="Init_balance" t-value="0"/>
+                        <div class="col-12">
+                            <div class="row" style="font-weight: bold;">
+                                <div class="col-3">
+                                    <p style="font-weight: bold;background-color:lightgrey;">رصيد أول المدة :
+                                        <t t-if="partner.get('Init_balance')">
+                                            <t t-esc="'%.3f'% partner.get('Init_balance').get('balance')"/>
+                                            <t t-set="Init_balance"
+                                               t-value="Init_balance + partner.get('Init_balance').get('balance')"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span>0.000</span>
+                                        </t>
+                                    </p>
+                                </div>
+                                <div class="col-3">
+                                    <p style="font-weight: bold;background-color:lightgrey;">الرصيد الحالى :
+                                        <t t-esc="'%.3f'% partner['balance']"/>
+                                    </p>
+                                </div>
+
+                                <div class="col-3">
+                                    <p style="font-weight: bold;background-color:lightgrey;">رصيد اخر المدة :
+                                        <t t-esc="'%.3f'% (Init_balance + partner['balance'])"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--                        <div class="row" style="font-weight: bold;margin-top:10px;">-->
+                        <!--                            <div class="col-3 "-->
+                        <!--                                 style="text-align:center;">-->
+                        <!--                                <strong>رصيد اخر المدة</strong>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="col-3 "-->
+                        <!--                                 style="text-align:center;">-->
+                        <!--                                <strong>رصيد أول المدة</strong>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="col-3 "-->
+                        <!--                                 style="text-align:center;">-->
+                        <!--                                <strong>الرصيد الحالي</strong>-->
+                        <!--                            </div>-->
+
+                        <!--                        </div>-->
+                        <!--                        <div class="row" style="font-weight: bold;">-->
+                        <!--                            <div class="col-3 " style="text-align:center;margin-bottom: 1rem;">-->
+                        <!--                                <span t-esc="partner['balance']"/>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="col-3 " style="text-align:center;margin-bottom: 1rem;">-->
+                        <!--                                <t t-if="partner.get('Init_balance')">-->
+                        <!--                                    <span t-esc="partner.get('Init_balance').get('balance', 0.0)"/>-->
+                        <!--                                </t>-->
+                        <!--                            </div>-->
+
+                        <!--                            <div class="col-3 " style="text-align:center;margin-bottom: 1rem;">-->
+                        <!--                                <span t-esc="partner['balance']"/>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <div class="row dir-rtl" style="margin-top:10px;">
+                            <div class="col-12">
+                                <table class="table">
+                                    <thead style="background-color:lightgrey;">
+                                        <tr>
+                                            <th width="15%">
+                                                <strong>التاريخ</strong>
+                                            </th>
+                                            <th width="10%">
+                                                <strong>رقم السند</strong>
+                                            </th>
+                                            <th width="20%">
+                                                <strong>النوع</strong>
+                                            </th>
+                                            <th  width="30%">
+                                                <strong>الوصف</strong>
+                                            </th>
+                                            <th width="10%">
+                                                <strong>مدين</strong>
+                                            </th>
+                                            <th  width="10%">
+                                                <strong>دائن</strong>
+                                            </th>
+                                            <th width="15%">
+                                                <strong>الرصيد الحالي</strong>
+
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="partner['move_lines']" t-as="line">
+                                            <td width="15%" >
+                                                <span t-esc="line['ldate']"/>
+                                            </td>
+                                            <td width="10%">
+                                                <span t-esc="line['move_name']"/>
+                                            </td>
+                                            <td width="20%">
+                                                <t t-if="line['move_name'].startswith('INV')">
+                                                    <span>فاتورة مبيعات</span>
+                                                </t>
+                                                <t t-elif="line['move_name'].startswith('BILL')">
+                                                    <span>فاتورة مشتريات</span>
+                                                </t>
+                                                <t t-elif="line['move_name'].startswith('RINV')">
+                                                    <span>مرتجع مبيعات</span>
+                                                </t>
+                                                <t t-elif="line['move_name'].startswith('RBILL')">
+                                                    <span>مرتجع مشتريات</span>
+                                                </t>
+                                                <t t-elif="line['move_name'].startswith('BNK1')">
+                                                    <span>بنك</span>
+                                                </t>
+                                                <t t-elif="line['move_name'].startswith('CSH1')">
+                                                    <span>نقدى</span>
+                                                </t>
+                                                <t t-elif="line['move_name'].startswith('MISC')">
+                                                    <span>منوعات</span>
+                                                </t>
+                                                <t t-elif="line['move_name'].startswith('STJ')">
+                                                    <span>منوعات</span>
+                                                </t>
+                                            </td>
+                                            <td  width="35%">
+                                                <span t-esc="line['lname']"/>
+                                            </td>
+
+                                            <td  width="10%">
+                                                <span t-esc="'%.3f'%line['debit']"/>
+                                            </td>
+                                            <td  style="color:red;" width="10%">
+                                                <span t-esc="'%.3f'%line['credit']"/>
+                                            </td>
+                                            <td  width="15%">
+                                                <span t-esc="'%.3f'%line['balance']"/>
+                                            </td>
+
+                                        </tr>
+                                        <tr style="font-weight: bold;">
+                                            <td colspan="4">
+                                                <span style="color: white;" t-esc="'..'"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'%.3f'%partner['debit']"/>
+                                            </td>
+                                            <td class="text-right" style="color:red;">
+                                                <span t-esc="'%.3f'%partner['credit']"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'%.3f'%partner['balance']"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row dir-rtl" style="margin-bottom: 1rem;">
+                            <div class="col-12">
+                                <strong>الرصيد</strong>
+                            <t t-if="Init_balance+partner['balance']>0.0">
+                                <strong>مدين</strong>
+                            </t>
+                            <t t-else="">
+                                <strong>دائن</strong>
+                            </t>
+                            <span t-esc="env.company.currency_id.with_context(lang='ar_001').amount_to_text(abs(Init_balance+partner['balance']))"/>
+                            </div>
+
+                        </div>
+                        <!--                        <div class="row dir-rtl" style="page-break-inside:avoid; ">-->
+                        <!--                            <table class="table" style="border-collapse: collapse;page-break-inside: auto ;">-->
+                        <!--                                <tbody>-->
+
+
+                        <!--                                    <tr style="page-break-inside:avoid; page-break-after:auto">-->
+                        <!--                                        <td style="border:2px solid;">-->
+                        <!--                                            <strong>إجمالي الفواتير:</strong>-->
+                        <!--                                            <strong t-esc="'%.3f'%get_partner_total_data(partner['id'])['total_invoiced']"></strong>-->
+                        <!--                                        </td>-->
+                        <!--                                        <td style="border:2px solid;">-->
+                        <!--                                            <strong>إجمالي مرتجع:</strong>-->
+                        <!--                                            <strong t-esc="'%.3f'%get_partner_total_data(partner['id'])['total_refund']"></strong>-->
+                        <!--                                        </td>-->
+                        <!--                                        <td style="border:2px solid;">-->
+                        <!--                                            <strong>إجمالي اشعارات دائنة:</strong>-->
+                        <!--                                            <strong t-esc="'%.3f'%get_partner_total_data(partner['id'])['total_credit']"></strong>-->
+                        <!--                                        </td>-->
+                        <!--                                    </tr>-->
+                        <!--                                    <tr style="page-break-inside:avoid; page-break-after:auto">-->
+                        <!--                                        <td style="border:2px solid;">-->
+                        <!--                                            <strong>إجمالي اشعارات مدينة:</strong>-->
+                        <!--                                            <strong t-esc="'%.3f'%get_partner_total_data(partner['id'])['total_debit']"></strong>-->
+                        <!--                                        </td>-->
+                        <!--                                        <td style="border:2px solid;">-->
+                        <!--                                            <strong>إجمال الشيكات: 0.000</strong>-->
+                        <!--                                        </td>-->
+                        <!--                                        <td style="border:2px solid;"></td>-->
+                        <!--                                    </tr>-->
+                        <!--                                </tbody>-->
+                        <!--                            </table>-->
+                        <!--                        </div>-->
+                        <div class="row dir-rtl">
+                            <div class="col-12">
+                                <strong>اسم المستلم:.....................</strong>
+                            </div>
+                        </div>
+                        <div class="row dir-rtl">
+                            <div class="col-9">
+                                <strong>توقيع المستلم:...................</strong>
+                            </div>
+                            <div class="col-3 text-center">
+                                <strong>المحاسب</strong>
+                                <br></br>
+                                <span>-------------</span>
+
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <strong>يعتبر هذا الكشف صحيحا ما لم يتم مراجعتنا خلال أسبوع من تاريخه</strong>
+                        </div>
+                        <div class="col-12 text-center">
+                            <strong>يثبت دفع الفاتورة بسند قبض أو بختم مدفوع</strong>
+                        </div>
+                        <!--                    </div>-->
+                        <p style="page-break-before:always;"/>
+
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="dynamic_accounts_report.partner_ledger">
+        <t t-call="web.html_container">
+            <t t-set="data_report_margin_top" t-value="12"/>
+            <t t-set="data_report_header_spacing" t-value="9"/>
+            <t t-set="data_report_dpi" t-value="110"/>
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <h3 style="text-align:centre;left:50%;"><span t-esc="Filters.get('company_name')"/>: Partner Ledger
+                    </h3>
+
+                    <span t-if="Filters.get('date_from')">
+                        <strong>From:</strong>
+                        <t t-esc="Filters['date_from']"/>
+                    </span>
+
+                    <span t-if="Filters.get('date_to')">
+                        <strong>To:</strong>
+                        <t t-esc="Filters['date_to']"/>
+                    </span>
+
+
+                    <div>
+                        <div style="text-align:centre;left:50%;" class="row">
+
+                            <div class="col-2" style="">
+                                <strong>Journals:</strong>
+                                <t t-foreach="Filters['journals']" t-as="ps">
+                                    <li>
+                                        <t t-esc="ps"/>
+                                    </li>
+                                </t>
+                            </div>
+                            <div class="col-2">
+                                <strong>Accounts:</strong>
+                                <t t-foreach="Filters['accounts']" t-as="ps">
+                                    <li>
+                                        <t t-esc="ps"/>
+                                    </li>
+                                </t>
+                            </div>
+
+                            <div class="col-2">
+                                <strong>Partners:</strong>
+                                <t t-foreach="Filters['partners']" t-as="ps">
+                                    <li>
+                                        <t t-esc="ps"/>
+                                    </li>
+                                </t>
+                            </div>
+                            <div class="col-2">
+                                <strong>Partner Tags:</strong>
+                                <t t-foreach="Filters['partner_tags']" t-as="ps">
+                                    <li>
+                                        <t t-esc="ps"/>
+                                    </li>
+                                </t>
+                            </div>
+                            <div class="col-2">
+                                <strong>Account Type:</strong>
+                                <t t-foreach="Filters['account_type']" t-as="ps">
+                                    <li>
+                                        <t t-esc="ps"/>
+                                    </li>
+                                </t>
+                            </div>
+                            <div class="col-2">
+                                <strong>Target move:</strong>
+                                <li>
+                                    <t t-esc="Filters['target_move']"/>
+                                </li>
+                            </div>
+
+
+                        </div>
+                        <div style="text-align:centre;left:50%;" class="row">
+
+                        </div>
+
+
+                        <br></br>
+                        <table class="table table-sm table-reports" style="padding:5px;">
+                            <thead>
+                                <tr class="text-center">
+                                    <th style="text-align:left;">Date</th>
+                                    <th style="text-align:left;">Journal</th>
+                                    <th style="text-align:left;">Account</th>
+                                    <th style="text-align:left;">Move</th>
+                                    <th style="text-align:left;">Entry Label</th>
+                                    <th style="text-align:right;">Debit</th>
+                                    <th style="text-align:right;">Credit</th>
+                                    <th style="text-align:right;">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="account_data" t-as="account">
+                                    <tr style="font-weight: bold;">
+                                        <td colspan="5">
+                                            <span style="color: white;" t-esc="'..'"/>
+                                            <!--                                        <span t-esc="account['code']"/>-->
+                                            <span t-esc="account['name']"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="account['debit']"
+                                            />
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="account['credit']"
+                                            />
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="account['balance']"
+                                            />
+                                        </td>
+                                        <td groups="base.group_multi_currency"/>
+                                    </tr>
+                                    <tr t-foreach="account['move_lines']" t-as="line">
+                                        <!--                                <tr t-foreach="account['move_lines']" t-as="line">-->
+                                        <td>
+                                            <span t-esc="line['ldate']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line['lcode']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line['account_name']"/>
+                                        </td>
+                                        <!--                                    <td><span t-if="line['lref']" t-esc="line['lref']"/></td>-->
+                                        <td>
+                                            <span t-esc="line['move_name']"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line['lname']"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="line['debit']"
+                                            />
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="line['credit']"
+                                            />
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="line['balance']"
+                                            />
+                                        </td>
+                                        <t t-if="line['amount_currency']">
+                                            <td class="text-right" groups="base.group_multi_currency">
+                                                <span t-esc="line['amount_currency'] if line['amount_currency'] > 0.00 else ''"/>
+                                                <span t-esc="line['currency_code'] if line['amount_currency'] > 0.00 else ''"/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br></br>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_print_partner_ledger" model="ir.actions.report">
+        <field name="name">Partner ledger</field>
+        <field name="model">account.partner.ledger</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dynamic_accounts_report.partner_ledger</field>
+        <field name="report_file">dynamic_accounts_report.partner_ledger</field>
+    </record>
+
+    <record id="action_print_partner_ledger_pdf" model="ir.actions.report">
+        <field name="name">Partner ledger PDF</field>
+        <field name="model">account.partner.ledger</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dynamic_accounts_report.partner_ledger_pdf</field>
+        <field name="report_file">dynamic_accounts_report.partner_ledger_pdf</field>
+        <field name="paperformat_id" ref="custom_invoice_report.paperformat_partner_ledger_report"/>
+
+    </record>
+
+</odoo>

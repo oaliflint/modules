@@ -1,0 +1,52 @@
+<odoo>
+    <data>
+        <record id='chart_of_accounts_with_parent.view_account_form_ext' model='ir.ui.view'>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//div[@class='row']" position="inside">
+                        <div class="col col-md-8">
+                            <label for="acc_level" string="Account Level"/>
+                            <div>
+                                <field name="acc_level" class="oe_inline"/>
+                            </div>
+                        </div>
+
+                        <div class="col col-md-8">
+                            <label for="acc_parent" string="Parent Account"/>
+                            <div>
+                                <field name="is_view" invisible="1"/>
+                                <field name="acc_parent" class="oe_inline" domain="[('is_view','=',True)]"/>
+                            </div>
+                        </div>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <record id="account_view_account_list_inherit" model="ir.ui.view">
+            <field name="name">account_view_account_list_inherit</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_list"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="is_view" invisible="1"/>
+                    <field name="acc_parent" string="Parent Account" optional="hide" domain="[('is_view','=',True)]"/>
+                    <field name="acc_level" string="Account Level" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_type_from_inherit" model="ir.ui.view">
+            <field name="name">view.account.type.form.inherit</field>
+            <field name="model">account.account.type</field>
+            <field name="inherit_id" ref="account.view_account_type_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='include_initial_balance']" position="after">
+                    <field name="is_view"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
